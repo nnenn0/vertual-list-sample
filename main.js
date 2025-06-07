@@ -39,7 +39,19 @@ function render() {
       item.dataset.index = i;
       item.textContent = data[i];
       item.style.top = `${i * ITEM_HEIGHT}px`;
-      container.appendChild(item);
+
+      // 次に大きいインデックスのアイテムを見つけて、その前に挿入
+      let nextElement = null;
+      for (const [index, element] of renderedItems) {
+        if (
+          index > i &&
+          (!nextElement || index < parseInt(nextElement.dataset.index))
+        ) {
+          nextElement = element;
+        }
+      }
+
+      container.insertBefore(item, nextElement);
       renderedItems.set(i, item);
     }
   }
