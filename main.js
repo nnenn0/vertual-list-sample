@@ -13,6 +13,9 @@ const data = Array.from(
   (_, i) => `バーチャルアイテム ${i + 1}`
 );
 
+// --- アイテム管理 ---
+const renderedItems = new Map(); // index -> DOM要素 のマップ
+
 // --- メイン処理 ---
 function render() {
   const scrollTop = container.scrollTop;
@@ -20,24 +23,24 @@ function render() {
   const start = Math.max(0, Math.floor(scrollTop / ITEM_HEIGHT) - OVERSCAN);
   const end = Math.min(TOTAL_ITEMS - 1, start + visibleCount + OVERSCAN * 2);
 
-  // 既存アイテムの処理
-  [...container.querySelectorAll(".item")].forEach((item) => {
-    const index = +item.dataset.index;
-    if (index < start || index > end) item.remove();
-  });
+  // 不要なアイテムの削除
+  for (const [index, item] of renderedItems) {
+    if (index < start || index > end) {
+      item.remove();
+      renderedItems.delete(index);
+    }
+  }
 
   // 新しいアイテムの追加
-  const existing = new Set(
-    [...container.querySelectorAll(".item")].map((item) => +item.dataset.index)
-  );
   for (let i = start; i <= end; i++) {
-    if (!existing.has(i)) {
+    if (!renderedItems.has(i)) {
       const item = document.createElement("div");
       item.className = "item";
       item.dataset.index = i;
       item.textContent = data[i];
       item.style.top = `${i * ITEM_HEIGHT}px`;
       container.appendChild(item);
+      renderedItems.set(i, item);
     }
   }
 }
