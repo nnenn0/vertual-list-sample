@@ -71,4 +71,6 @@ container.addEventListener("scroll", () => {
 });
 
 window.addEventListener("resize", render);
-document.addEventListener("DOMContentLoaded", init);
+
+// --- 初期化 ---
+init();
