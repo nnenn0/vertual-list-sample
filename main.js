@@ -41,34 +41,21 @@ function render() {
       item.style.top = `${i * ITEM_HEIGHT}px`;
 
       // 次に大きいインデックスのアイテムを見つけて、その前に挿入
+      let nextElement = null;
       const sortedIndices = Array.from(renderedItems.keys()).sort(
         (a, b) => a - b
       );
-      const nextIndex = binarySearchFirstGreater(sortedIndices, i);
-      const nextElement =
-        nextIndex !== null ? renderedItems.get(nextIndex) : null;
+      for (const index of sortedIndices) {
+        if (index > i) {
+          nextElement = renderedItems.get(index);
+          break;
+        }
+      }
+
       container.insertBefore(item, nextElement);
       renderedItems.set(i, item);
     }
   }
-}
-
-function binarySearchFirstGreater(sortedArr, target) {
-  let left = 0;
-  let right = sortedArr.length - 1;
-  let result = null;
-
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-    if (sortedArr[mid] > target) {
-      result = sortedArr[mid];
-      right = mid - 1;
-    } else {
-      left = mid + 1;
-    }
-  }
-
-  return result;
 }
 
 function init() {
