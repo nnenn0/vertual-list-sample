@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>シンプルなバーチャルレンダリング</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        overflow: hidden; /* bodyのスクロールを無効化 */
+      }
+      #scrollable-container {
+        height: 100vh; /* 画面の高さいっぱいにする */
+        overflow-y: scroll; /* コンテナ内でスクロールを有効にする */
+        position: relative; /* アイテムの絶対配置の基準 */
+        border: 1px solid #ccc;
+      }
+      /* ダミー要素のスタイル */
+      #virtual-scroll-track {
+        position: absolute; /* コンテナ内で絶対配置 */
+        top: 0;
+        left: 0;
+        width: 1px; /* 最小限の幅で隠す */
+        height: 100%; /* 初期値。JavaScriptで更新される */
+        z-index: -1; /* アイテムの下に隠す */
+      }
+      .item {
+        height: 50px; /* 各アイテムの高さ（固定） */
+        line-height: 50px;
+        padding: 0 10px;
+        border-bottom: 1px solid #eee;
+        box-sizing: border-box; /* paddingとborderを高さに含める */
+        background-color: #f9f9f9;
+        position: absolute; /* バーチャルレンダリングのために絶対配置 */
+        width: 100%;
+        left: 0;
+      }
+      .item:nth-child(even) {
+        background-color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="scrollable-container">
+      <div id="virtual-scroll-track"></div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
