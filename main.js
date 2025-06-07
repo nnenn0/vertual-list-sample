@@ -42,12 +42,13 @@ function render() {
 
       // 次に大きいインデックスのアイテムを見つけて、その前に挿入
       let nextElement = null;
-      for (const [index, element] of renderedItems) {
-        if (
-          index > i &&
-          (!nextElement || index < parseInt(nextElement.dataset.index))
-        ) {
-          nextElement = element;
+      const sortedIndices = Array.from(renderedItems.keys()).sort(
+        (a, b) => a - b
+      );
+      for (const index of sortedIndices) {
+        if (index > i) {
+          nextElement = renderedItems.get(index);
+          break;
         }
       }
 
